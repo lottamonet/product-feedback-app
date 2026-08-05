@@ -64,10 +64,10 @@ Single table: `suggestions`
 | `title` | `VARCHAR(100)` | `NOT NULL` | Suggestion title |
 | `category` | `VARCHAR(20)` | `NOT NULL`, `CHECK (category IN ('ui','ux','enhancement','bug','feature'))` | Stored lowercase; display-formatted (e.g. "UI", "UX") in the frontend |
 | `detail` | `VARCHAR(500)` | `NOT NULL` | Full suggestion description |
-| `upvotes` | `INTEGER` | `NOT NULL DEFAULT 0` | Display-only for MVP; upvoting endpoint is out of scope |
-| `created_at` | `TIMESTAMP` | `NOT NULL DEFAULT NOW()` | For potential future sorting by newest |
 
 **Sample data:** insert at least 3 rows spanning at least 2 different categories (e.g. one `ui`, one `feature`, one `bug`) so the empty-state and filtering behavior can both be verified immediately after seeding.
+
+**Note:** `upvotes` and `created_at` are intentionally excluded from the MVP schema — upvoting/sorting are stretch goals (see §7), and adding these columns now would be scope creep with nothing that uses them. Add them only if/when a stretch goal that needs them is actually picked up.
 
 ---
 
@@ -91,17 +91,13 @@ GET /get-all-suggestions
     "id": 1,
     "title": "Add tags for solutions",
     "category": "enhancement",
-    "detail": "Easier to search for solutions based on a specific stack.",
-    "upvotes": 6,
-    "created_at": "2026-07-01T12:00:00.000Z"
+    "detail": "Easier to search for solutions based on a specific stack."
   },
   {
     "id": 2,
     "title": "Add a dark theme option",
     "category": "feature",
-    "detail": "It would help people with light sensitivities and who prefer dark mode.",
-    "upvotes": 9,
-    "created_at": "2026-07-02T09:30:00.000Z"
+    "detail": "It would help people with light sensitivities and who prefer dark mode."
   }
 ]
 ```
@@ -137,15 +133,13 @@ POST /add-one-suggestion
 }
 ```
 
-**Example Response:** `201 Created`, the newly created suggestion object (including generated `id`, default `upvotes: 0`, and `created_at`)
+**Example Response:** `201 Created`, the newly created suggestion object (including generated `id`)
 ```json
 {
   "id": 7,
   "title": "Add tags for solutions",
   "category": "enhancement",
-  "detail": "Easier to search for solutions based on a specific stack.",
-  "upvotes": 0,
-  "created_at": "2026-08-05T14:22:10.000Z"
+  "detail": "Easier to search for solutions based on a specific stack."
 }
 ```
 
