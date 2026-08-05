@@ -1,0 +1,55 @@
+.sidebar {
+  width: 255px;
+  flex-shrink: 0;
+}
+
+.sidebar__brand {
+  background: linear-gradient(135deg, #AD1FEA 0%, #F49F85 100%);
+  border-radius: 10px;
+  padding: 1.75rem;
+  color: var(--color-white);
+  margin-bottom: 1.5rem;
+}
+
+.sidebar__brand h4 {
+  color: var(--color-white);
+  font-size: 1.125rem;
+}
+
+.sidebar__brand p {
+  opacity: 0.75;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.sidebar__filters {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-pill {
+  background-color: var(--color-bg-light);
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.filter-pill:hover {
+  background-color: #D2D6F9;
+}
+
+.filter-pill--active {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.filter-pill--active:hover {
+  background-color: var(--color-blue);
+}

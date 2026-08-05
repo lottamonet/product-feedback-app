@@ -1,5 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-purple: #AD1FEA;
+  --color-purple-hover: #C75AF6;
+  --color-blue: #4661E6;
+  --color-blue-hover: #7C91F9;
+  --color-navy: #373F68;
+  --color-navy-hover: #3A4374;
+  --color-white: #FFFFFF;
+  --color-bg-light: #F2F4FF;
+  --color-bg-page: #F7F8FD;
+  --color-text-muted: #647196;
+  --color-coral: #F49F85;
+  --color-lightblue: #62BCFA;
+  --color-red: #D73737;
+
+  --font-body: 'Jost', sans-serif;
+
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
 
@@ -7,4 +25,35 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg-page);
+  color: var(--color-navy);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-navy);
+}
+
+h1 { font-size: 1.5rem; line-height: 2.1875rem; letter-spacing: -0.33px; }
+h2 { font-size: 1.25rem; line-height: 1.8125rem; letter-spacing: -0.25px; }
+h3 { font-size: 1.125rem; line-height: 1.625rem; letter-spacing: -0.25px; }
+h4 { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: -0.2px; }
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
 }

@@ -1,0 +1,29 @@
+.suggestions-header {
+  background-color: var(--color-navy);
+  border-radius: 10px;
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.suggestions-header__count {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.btn-add-feedback {
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add-feedback:hover {
+  background-color: var(--color-purple-hover);
+}
