@@ -24,3 +24,15 @@ export async function addSuggestion(suggestion) {
   }
   return data;
 }
+
+// Upvote stretch goal: no request body needed, the id in the URL is enough.
+export async function upvoteSuggestion(id) {
+  const res = await fetch(`${API_URL}/upvote-suggestion/${id}`, {
+    method: "POST",
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to upvote suggestion");
+  }
+  return data;
+}

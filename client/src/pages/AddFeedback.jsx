@@ -10,6 +10,11 @@ const MAX_DETAIL_LENGTH = 500;
 // Matches the Figma dropdown order (Feature is the default selection)
 const DROPDOWN_CATEGORIES = ["feature", "ui", "ux", "enhancement", "bug"];
 
+// Client-side validation purely for instant feedback (no round trip to the
+// server needed to show "Can't be empty"). The server runs the same rules
+// again on its own — that copy is the one that actually protects the
+// database, since this one is trivially bypassed by anyone calling the API
+// directly instead of through this form.
 function validate({ title, detail }) {
   const errors = {};
   if (!title.trim()) {

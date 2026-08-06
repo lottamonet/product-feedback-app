@@ -6,7 +6,7 @@
 .sidebar__brand {
   background: linear-gradient(135deg, #AD1FEA 0%, #F49F85 100%);
   border-radius: 10px;
-  padding: 1.75rem;
+  padding: 1.25rem 1.5rem;
   color: var(--color-white);
   margin-bottom: 1.5rem;
 }
@@ -52,4 +52,53 @@
 
 .filter-pill--active:hover {
   background-color: var(--color-blue);
+}
+
+/* Hidden above the mobile breakpoint — the sidebar is always visible
+   there, so there's nothing to close. */
+.sidebar__close {
+  display: none;
+}
+
+.sidebar__backdrop {
+  display: none;
+}
+
+/* Hamburger menu stretch goal: below 600px the sidebar becomes a
+   fixed off-canvas panel instead of a stacked block, sliding in over
+   the page when opened via the hamburger button in SuggestionsHeader. */
+@media (max-width: 600px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 85%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 100;
+    background-color: var(--color-bg-page);
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  .sidebar__close {
+    display: block;
+    background: none;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(55, 63, 104, 0.5);
+    z-index: 99;
+  }
 }

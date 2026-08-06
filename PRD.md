@@ -15,8 +15,8 @@
 ### 2.1 Home page (`/`)
 
 - On load, fetch and display **all suggestions** via `GET /get-all-suggestions`.
-- Each suggestion card shows: title, category tag, detail/description text, upvote count (display only — upvoting is out of scope, see §7).
-- Default sort: no required sort order for MVP (stretch: sort by most upvotes).
+- Each suggestion card shows: title, category tag, detail/description text, and an upvote control (up-arrow button + count). Clicking it increments the suggestion's upvote count via `POST /upvote-suggestion/:id` (stretch goal, implemented — see §7).
+- **Sort control**: a dropdown with `Most Upvotes` and `Least Upvotes`, sorting the currently-displayed (possibly filtered) list client-side. Default: `Most Upvotes`. Sort state resets to default on refresh, same as filter state.
 - **Category filter bar**: buttons for `All`, `UI`, `UX`, `Enhancement`, `Bug`, `Feature`.
   - Clicking a category button calls `GET /get-suggestions-by-category/:category` and re-renders the list with only matching suggestions.
   - Clicking `All` re-fetches `GET /get-all-suggestions`.
@@ -50,7 +50,8 @@
 ### 2.3 Responsive behavior
 
 - Must render cleanly at mobile (375px), tablet (768px), and desktop (1440px) widths per the Figma file.
-- Category filter bar wraps or scrolls appropriately on narrow viewports (exact mobile filter treatment — inline wrap vs. scroll — to be finalized against Figma during Milestone 7; hamburger-menu nav is a stretch goal, not required for MVP).
+- Category filter bar wraps or scrolls appropriately on narrow viewports (exact mobile filter treatment — inline wrap vs. scroll — to be finalized against Figma during Milestone 7).
+- **Mobile navigation (stretch goal, implemented)**: below the tablet breakpoint, the sidebar (brand card + category filters) is hidden by default behind a hamburger icon button. Tapping it slides the sidebar in as an overlay; tapping the close icon or selecting a category closes it again.
 
 ---
 
@@ -64,10 +65,11 @@ Single table: `suggestions`
 | `title` | `VARCHAR(100)` | `NOT NULL` | Suggestion title |
 | `category` | `VARCHAR(20)` | `NOT NULL`, `CHECK (category IN ('ui','ux','enhancement','bug','feature'))` | Stored lowercase; display-formatted (e.g. "UI", "UX") in the frontend |
 | `detail` | `VARCHAR(500)` | `NOT NULL` | Full suggestion description |
+| `upvotes` | `INTEGER` | `NOT NULL DEFAULT 0` | Added when the upvote stretch goal was picked up; increments via `POST /upvote-suggestion/:id` |
 
 **Sample data:** insert at least 3 rows spanning at least 2 different categories (e.g. one `ui`, one `feature`, one `bug`) so the empty-state and filtering behavior can both be verified immediately after seeding.
 
-**Note:** `upvotes` and `created_at` are intentionally excluded from the MVP schema — upvoting/sorting are stretch goals (see §7), and adding these columns now would be scope creep with nothing that uses them. Add them only if/when a stretch goal that needs them is actually picked up.
+**Note:** `created_at` is still excluded — nothing in the app (including the sort stretch goal, which sorts by `upvotes` not recency) needs it. `upvotes` was added specifically because the upvote stretch goal was picked up; this is why the MVP data model and the actual schema can legitimately diverge over time as scope changes — the PRD should track *why*, not just *what*.
 
 ---
 
@@ -91,13 +93,15 @@ GET /get-all-suggestions
     "id": 1,
     "title": "Add tags for solutions",
     "category": "enhancement",
-    "detail": "Easier to search for solutions based on a specific stack."
+    "detail": "Easier to search for solutions based on a specific stack.",
+    "upvotes": 6
   },
   {
     "id": 2,
     "title": "Add a dark theme option",
     "category": "feature",
-    "detail": "It would help people with light sensitivities and who prefer dark mode."
+    "detail": "It would help people with light sensitivities and who prefer dark mode.",
+    "upvotes": 9
   }
 ]
 ```
@@ -133,17 +137,40 @@ POST /add-one-suggestion
 }
 ```
 
-**Example Response:** `201 Created`, the newly created suggestion object (including generated `id`)
+**Example Response:** `201 Created`, the newly created suggestion object (including generated `id`, default `upvotes: 0`)
 ```json
 {
   "id": 7,
   "title": "Add tags for solutions",
   "category": "enhancement",
-  "detail": "Easier to search for solutions based on a specific stack."
+  "detail": "Easier to search for solutions based on a specific stack.",
+  "upvotes": 0
 }
 ```
 
 **Error case:** if `title`, `category`, or `detail` is missing/empty, or `category` is not a valid enum value, return `400 Bad Request` with `{ "error": "<field>-specific message" }`. This server-side validation must exist independent of frontend validation (see security audit, Milestone 8).
+
+### `POST /upvote-suggestion/:id`
+
+**Description:** Increments a single suggestion's `upvotes` by 1 and returns the updated row. Added for the upvote stretch goal.
+
+**Example Request URL:**
+```
+POST /upvote-suggestion/3
+```
+
+**Example Response:** `200 OK`, the updated suggestion object
+```json
+{
+  "id": 3,
+  "title": "Q&A within the challenge hubs",
+  "category": "feature",
+  "detail": "Challenge-specific Q&A would make for easy reference.",
+  "upvotes": 5
+}
+```
+
+**Error case:** if `:id` doesn't correspond to an existing suggestion, return `404 Not Found` with `{ "error": "Suggestion not found" }`. If `:id` isn't a valid integer, return `400 Bad Request` with `{ "error": "Invalid suggestion id" }`.
 
 ---
 
@@ -168,18 +195,18 @@ CORS on the Express server must be scoped to the deployed Netlify origin (not le
 
 ---
 
-## 7. Out of Scope (MVP)
+## 7. Out of Scope
 
-Explicitly **not** building in this version — these exist as icon assets/stretch goals but must not be implemented unless time remains after all required milestones:
+**Stretch goals picked up** (implemented after MVP): upvoting, sort by upvotes, hamburger mobile navigation. See §2 and §3 for their specs.
 
-- Upvoting suggestions (clicking to increment `upvotes`)
+**Still out of scope** — not building these:
+
 - Commenting on suggestions
 - Editing an existing suggestion
 - Deleting an existing suggestion
 - A suggestion detail page (separate from the Home list)
-- Sorting controls (most/least upvotes, most/least comments)
+- Sorting/filtering by comment count (no comments feature exists to sort by)
 - Multi-select category filtering (only single-category-at-a-time filtering is required)
-- Hamburger mobile navigation menu
 - User authentication/accounts
 
 ---

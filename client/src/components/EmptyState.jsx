@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import "./EmptyState.css";
 
+// Shown by Home.jsx instead of the suggestion list whenever the current
+// filter has zero matching suggestions (including "All" if the whole
+// table is empty).
 function EmptyState() {
   return (
     <div className="empty-state">

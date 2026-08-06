@@ -3,6 +3,35 @@
   border-radius: 10px;
   padding: 1.5rem 1.75rem;
   margin-bottom: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* A vertical pill: arrow icon on top, count below. Its own button (not
+   part of the card's click area) so tapping the card body doesn't
+   accidentally register a vote. */
+.suggestion-card__upvote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  background-color: var(--color-bg-light);
+  color: var(--color-blue);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.625rem 1rem;
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.suggestion-card__upvote:hover {
+  background-color: #D2D6F9;
+}
+
+.suggestion-card__body {
+  min-width: 0;
 }
 
 .suggestion-card__title {

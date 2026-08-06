@@ -1,31 +1,48 @@
 import { CATEGORIES, CATEGORY_LABELS } from "../constants/categories.js";
+import closeIcon from "../assets/icons/mobile/icon-close.svg";
 import "./Sidebar.css";
 
-function Sidebar({ activeCategory, onSelectCategory }) {
+// isOpen/onClose only matter below the mobile breakpoint, where the
+// hamburger button in SuggestionsHeader controls this instead of the
+// sidebar always being visible. Above that breakpoint, CSS ignores
+// isOpen and the sidebar renders normally.
+function Sidebar({ activeCategory, onSelectCategory, isOpen, onClose }) {
   return (
-    <aside className="sidebar">
-      <div className="sidebar__brand">
-        <h4>My Company</h4>
-        <p>Feedback Board</p>
-      </div>
-      <div className="sidebar__filters">
+    <>
+      {isOpen && <div className="sidebar__backdrop" onClick={onClose} />}
+      <aside className={`sidebar ${isOpen ? "sidebar--open" : ""}`}>
         <button
-          className={`filter-pill ${activeCategory === null ? "filter-pill--active" : ""}`}
-          onClick={() => onSelectCategory(null)}
+          type="button"
+          className="sidebar__close"
+          onClick={onClose}
+          aria-label="Close menu"
         >
-          All
+          <img src={closeIcon} alt="" aria-hidden="true" />
         </button>
-        {CATEGORIES.map((category) => (
+
+        <div className="sidebar__brand">
+          <h4>My Company</h4>
+          <p>Feedback Board</p>
+        </div>
+        <div className="sidebar__filters">
           <button
-            key={category}
-            className={`filter-pill ${activeCategory === category ? "filter-pill--active" : ""}`}
-            onClick={() => onSelectCategory(category)}
+            className={`filter-pill ${activeCategory === null ? "filter-pill--active" : ""}`}
+            onClick={() => onSelectCategory(null)}
           >
-            {CATEGORY_LABELS[category]}
+            All
           </button>
-        ))}
-      </div>
-    </aside>
+          {CATEGORIES.map((category) => (
+            <button
+              key={category}
+              className={`filter-pill ${activeCategory === category ? "filter-pill--active" : ""}`}
+              onClick={() => onSelectCategory(category)}
+            >
+              {CATEGORY_LABELS[category]}
+            </button>
+          ))}
+        </div>
+      </aside>
+    </>
   );
 }
 

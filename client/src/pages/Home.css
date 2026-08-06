@@ -15,7 +15,14 @@
   .home-page {
     flex-direction: column;
   }
+}
 
+/* Tablet only (601-768px): sidebar stacks full-width above the list, same
+   as before the hamburger menu existed. Below 600px, Sidebar.css takes
+   over with position:fixed for the off-canvas menu — scoping this rule to
+   min-width:601px keeps the two breakpoints from fighting over `.sidebar`'s
+   width. */
+@media (min-width: 601px) and (max-width: 768px) {
   .sidebar {
     width: 100%;
   }
