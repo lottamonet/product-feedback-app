@@ -1,210 +1,116 @@
 # Product Feedback App
 
-## 👋 Welcome!
+## 📌 Project Description & Purpose
 
-Imagine you are starting out as a freelance full-stack developer. You've just been hired by your first new client: a startup that is building a new product. The startup is generically named _My Company_. 
+This project is a full-stack Product Feedback application built for a fictional startup, "My Company." Customers can view existing product suggestions, filter them by category, and submit new suggestions for how the product could be improved. It was built as part of AnnieCannons' AI-assisted development track: instead of hand-writing every line, the app was directed through an AI coding agent (Claude Code) working from a PRD, with all testing, debugging, and auditing done and verified by hand.
 
-_My Company_ wants you to build a Product Feedback application, where customers can view and submit feedback about how their product could be improved. 
+## 🚀 Live Site
 
-[View the live project demo](https://product-feedback-app-2025.netlify.app/) ✨
+- **Frontend:** https://product-feedback-app-lotta.netlify.app
+- **API:** https://product-feedback-api-nwse.onrender.com
+- **Database:** Neon Postgres, project name `suggestions`
 
-![image](https://github.com/user-attachments/assets/5fabe48e-fb2b-4337-94cc-515e64a0bf66)
+## 🖼️ Screenshots
 
+_Screenshot coming soon — added during the class walkthrough._
 
-## 🎯 Project Requirements
+## ✨ Features
 
-You will build the 3 parts of a full-stack application:
-- **Database** — built with PostgreSQL and deployed to Neon
-- **Server/API** — built with Node and Express and deployed to Render
-- **Frontend** — built with React and deployed to Netlify
-  
-The frontend should be responsive, and there should be 2 pages:
-1. The Home page, where users can:
-     - View all suggestions 
-     - View suggestions filtered by category
-     - When there are no suggestions for the currently selected filter, show the "There is no feedback" screen
-2. The AddFeedback page, where users can:
-     - Submit a new suggestion by filling out a form
-     - Receive form validations when trying to submit a new suggestion
+This is what you can do on the app:
+- View all product suggestions on the Home page
+- Filter suggestions by category (UI, UX, Enhancement, Bug, Feature)
+- See a friendly "There is no feedback yet" empty state when a filter has no matching suggestions
+- Submit a new suggestion via the AddFeedback page, with client- and server-side form validation
+- Upvote a suggestion (optimistic UI update, confirmed against the server)
+- Sort suggestions by most or least upvotes
+- On mobile, browse categories through an off-canvas hamburger menu
+- Fully responsive across mobile, tablet, and desktop widths
 
+## 🛠️ Tech Stack
 
-## The Tech Stack
+**Frontend**
 
-These are all the technologies you should use to build your full-stack application: 
+- **Languages:** HTML, CSS, JavaScript (JSX)
+- **Framework:** React (Vite), React Router
+- **Deployment:** Netlify
 
-| Component | Language | Framework | Deployment | Dev Tools |
-|-----------|------------|----------------|------------|-------|
-| Frontend  | HTML, CSS, JavaScript | React         | Netlify   |      |
-| Server/API | Node.js     | Express       | Render    | Postman for API testing |
-| Database  | PostgreSQL |               | Neon    |   |
+**Server/API**
 
+- **Languages:** JavaScript (Node.js)
+- **Framework:** Express
+- **Deployment:** Render
 
+**Database**
 
-## 🔗 Resources
+- **Languages:** SQL (PostgreSQL)
+- **Deployment:** Neon
 
-- **Designs:** You will need to use this [Figma file](https://www.figma.com/design/vxjX8SdBOt21DCD14mrBM9/Product-Feedback-App-Design?node-id=0-1&t=OH1BSnaLrvNeWMlQ-1) for the designs
-- **Documentation Guides:** The teaching team at AnnieCannons has provided some [handy guides](https://docs.google.com/document/d/18jxCUA0bebCyYaIHy8aaKMgOQH4w5-b-iCGDWpV4K4M/edit?tab=t.0#heading=h.ykdbmvmlp0ag) to help you use Github and other coding tools
+## 🔹 API Documentation
 
+These are the API endpoints I built:
+1. `GET /get-all-suggestions` — get every suggestion
+2. `GET /get-suggestions-by-category/:category` — get suggestions filtered to one category
+3. `POST /add-one-suggestion` — create a new suggestion
+4. `POST /upvote-suggestion/:id` — increment a suggestion's upvote count
 
+Learn more about the API endpoints here: [api-documentation.md](./api-documentation.md)
 
-## 📝 Tips for building your project
+## 🗄️ Database Schema
 
-1. **Pseudo-code before you write any code!** Look through the designs to plan out how you'll tackle the project. Write down your plan somewhere in this README or in your code. 
-2. **Work on one feature at a time.** Finish one feature first before you move onto the next thing. Test as you go, routinely checking your site in the browser and making sure there are no errors before moving on. 
-3. **Comment your code generously — Future You will thank you.** You’ll be building on top of this project over the next 3 months, so help yourself out by writing clear, helpful comments that explain what your code is doing. Trust us, it will save you time and confusion later.
-4. **Clean up your code as you go**. Rename confusing variables, remove unused code, and organize your logic. Your code should read like a newspaper: clear, easy to follow, and understandable at a glance.
+Here's the SQL I used to create my table:
 
+```sql
+CREATE TABLE suggestions (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  category VARCHAR(20) NOT NULL CHECK (category IN ('ui', 'ux', 'enhancement', 'bug', 'feature')),
+  detail VARCHAR(500) NOT NULL,
+  upvotes INTEGER NOT NULL DEFAULT 0
+);
+```
 
----
+## 🩺 Lighthouse Scores
 
-## 🚀 Roadmap: Step-by-step guide to building this project
+Run against the deployed frontend for both pages:
 
----
+| Page | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|
+| Home | 96 | 100 | 100 | 100 |
+| AddFeedback | 99 | 100 | 100 | 100 |
 
-### 🎯 Milestone 1: Write API Documentation
+**Home:**
 
-1. In the root folder of your `product-feedback-app` Github repo, you'll find an `api-documentation.md` file.
-2. Your task is to fill in the blanks in this API documentation file using Markdown code. This is an important step in planning how your frontend and backend will communicate. Think of this document as a blueprint for the API endpoints your app will need.
-3. For each API endpoint, you will need to write:
-    - A description,
-    - An example request URL
-    - An example request body (if applicable)
-    - An example response. 
-4. Refer to the [Countries API Documentation](https://github.com/AnnieCannons/countries-app-instructions/blob/main/version-3/api-documentation.md) as an example of what a finished doc should look like. 
+![Lighthouse scores for the Home page](./lighthouse-reports/home-scores.png)
 
----
+**AddFeedback:**
 
-### 🎯 Milestone 2: Create SQL Database Schema
+![Lighthouse scores for the AddFeedback page](./lighthouse-reports/add-feedback-scores.png)
 
-1. Review the [Figma designs](https://www.figma.com/design/vxjX8SdBOt21DCD14mrBM9/Product-Feedback-App-Design?node-id=0-1&t=OH1BSnaLrvNeWMlQ-1) and plan/pseudo-code what data you'll need to build this application 
-2. [Fork this DB Fiddle](https://www.db-fiddle.com/f/mDJ76U1Xpi8ZR79RqDgYny/0)
-3. Write PostgreSQL code to create your table(s)
-4. Insert at least 3 rows of sample data into each table
-5. Write the SQL queries for your API to:
-     - Get all suggestions
-     - Get suggestions by category
-     - Add a suggestion
-6. Bookmark the link to your DB Fiddle so you can find it later.
-7. Submit the link to your DB Fiddle on Canvas.
-   
----
+Full exported reports: [home.report.html](./lighthouse-reports/home.report.html), [add-feedback.report.html](./lighthouse-reports/add-feedback.report.html)
 
-### 🎯 Milestone 3: Deploy SQL Database to Neon
+## 🤖 AI Usage Log
 
-1. Use Neon.tech to create a new Neon project called `suggestions`. Use this [Neon deployment guide](https://github.com/AnnieCannons/countries-api-project-may-2025/blob/main/version-4/deploy-database-to-neon.md) to help you. 
-2. Set up your database on Neon (create your table(s) and insert rows of sample data)
+Built with Claude Code across every stage: PRD drafting, database schema help, the Express API, the React frontend, and the Milestone 6-9 bug-fix/audit/deploy cycle. A few things worth calling out:
 
----
+- **The agent found real bugs I'd missed manually.** After I tested every endpoint in Postman and found nothing, an adversarial pass (malformed JSON, missing Content-Type, wrong field types) turned up two 500-crash bugs that leaked the server's file paths in the error response — exactly the class of bug that's invisible in Postman because Postman only ever sends well-formed requests.
+- **It caught a deployment blocker before it became one.** My DB credentials lived in a gitignored `config.js`, which worked fine locally but would have made the server crash on Render (the file simply wouldn't exist after a fresh `git clone`). Caught and fixed during the security audit, before I ever tried to deploy.
+- **I pushed back on its defaults and it adjusted.** Early on it used explicit SQL column lists over `SELECT *` as a "best practice" — I asked why, we talked through the actual tradeoff for a project this size, and switched to `SELECT *`. That decision paid off later when the `upvotes` column got added for a stretch goal and needed zero query changes.
+- **UI fidelity took a real side-by-side pass, not a one-shot.** AI-generated layout drifted from the Figma file in a couple of concrete ways (the tablet breakpoint stacked the sidebar full-width instead of keeping the brand card and filters side by side; the brand card was the same height as the header bar instead of taller) — both caught by comparing the rendered app against the actual Figma frames and fixed in a dedicated milestone.
+- **Every fix was tested before it was called done** — re-run in Postman/curl for backend changes, checked at mobile/tablet/desktop for UI changes, and re-audited with Lighthouse for accessibility/SEO fixes — rather than trusting the agent's own claim that something worked.
 
-### ⚙️ Fork & Clone the Github repo 
-1. Fork this Github repo into your own account. Use this [fork and clone guide](https://docs.google.com/document/d/18jxCUA0bebCyYaIHy8aaKMgOQH4w5-b-iCGDWpV4K4M/edit?tab=t.55gk3qetux2a#heading=h.wbbot8ebr58a) to help you.
-2. Clone your new Github repo into the `dev` folder on your local machine. 
+## 💭 Reflections
 
----
+**What I learned:** ___________
 
-### ⚙️ Set up your `server` folder in VS Code
-1. In VS Code, open up your `product-feedback-app` project. You should see 3 folders and files already provided for you: 
-     - `client` — holds your frontend React code
-     - `server` — holds your backend server/API code
-     - `README.md` — holds the project info & instructions
- 
-2. Open up the `server` folder. In that folder, you should see the following files already provided for you:
+**What I'm proud of:** ___________
 
-      - `package.json` — lists information about your project and its dependencies 
-      - `.gitignore` — lists which files and folders that Git should ignore 
-      - `src` folder — where all your custom code will live
-      - `index.js` — where you will write your server/API code
-      - `config.js` — contains your database's access credentials
+**What challenged me:** ___________
 
-3. In VS Code, open the terminal and `cd` into your `server` folder
-4. In the `server` folder, run `npm install express` and `npm install pg`. 
+**Future ideas for how I'd continue building this project:**
+1. Add comment threads on individual suggestions
+2. Let users edit or delete their own suggestions
+3. Add a suggestion detail page instead of only the list view
 
-     Once you do that, you should see `express` and `pg` listed as dependencies in your `package.json`. 
+## 🙌 Credits & Shoutouts
 
-     You should also see your `node_modules` folder was generated. This folder contains all of the code from your project's dependencies. 
-
----
-
-### ⚙️ Connect your Neon-hosted PostgreSQL database to your Express server
-1. [Follow this guide to connect your Neon database to your Express server](https://github.com/AnnieCannons/countries-app-instructions/blob/main/version-4/connect-neon-database-to-express-server.md).
-
----
-
-### ⚙️ Set up your server's boilerplate code 
-1. In your server's `index.js` file, set up your server using the same boilerplate code as your `version-4` of the Countries API project. 
-
----
-
-### 🎯 Milestone 4: Build the Local Server/API
-1. Build your API endpoints and helper functions:
-  - `GET /get-all-suggestions`: Return all the suggestions data
-  - `GET /get-suggestions-by-category/:category`: Return suggestions filtered by category 
-  - `POST /add-one-suggestion`: Save submitted form data
-2. Test your API endpoints in Postman to make sure they're working
-3. Push your code to Github 
-
----
-
-### 🎯 Milestone 5: Build the Frontend
-
-1. Review the React project skeleton already provided in the `client` folder. Take a look at the `assets` folder, which has all of the icons and image assets you'll need to build the frontend. 
-2. Start by making a `pages` folder and `components` folder to hold your pages and components. You should have 2 pages, the Home page (where you can view all suggestions) and the AddFeedback page (which has the form to submit a new suggestion).
-3. Set up your routes to your pages with React Router. Refer to this [react-router guide](https://docs.google.com/document/d/18jxCUA0bebCyYaIHy8aaKMgOQH4w5-b-iCGDWpV4K4M/edit?tab=t.hbxxe6vmm0fq#heading=h.snu4ai1ffrgi) to help you.
-4. Write your code to build the frontend, according to the [Figma designs](https://www.figma.com/design/vxjX8SdBOt21DCD14mrBM9/Product-Feedback-App-Design?node-id=0-1&t=OH1BSnaLrvNeWMlQ-1). The frontend should be responsive, and there should be 2 pages:
-   
-     - The Home page, where users can:
-          - View all suggestions 
-          - View suggestions filtered by category
-          - When there are no suggestions for the currently selected filter, show the "There is no feedback" screen
-     - The AddFeedback page, where users can:
-          - Submit a new suggestion by filling out a form
-          - Receive form validations when trying to submit a new suggestion
-            
-5. Push your code to Github
-
----
-
-### 🎯 Milestone 6: Deploy to Netlify and Render
-
-2. Deploy your server/API code (in the `server` folder) to Render, and your frontend code (in the `client` folder) to Netlify. Use this [Render deployment guide](https://github.com/AnnieCannons/countries-app-instructions/blob/main/version-5/deploy-server-to-render.md) to help you. 
-
----
-
-### Test everything again... and again! 
-1. Now that your database, API, and frontend are all deployed to the internet, you can test all user flows:
-   - Viewing all suggestions
-   - Filtering the suggestions
-   - Adding a suggestion
-3. Check your database to make sure the data is updating correctly
-
----
-
-### Clean and Comment your code
-1. Clean up your code to make it clean and modular
-2. Remove unnecessary console.log() messages and unused blocks of commented-out code.
-3. Comment complex logic to explain how it works
-
----
-
-### README.md Project Documentation 
-1. In your project's README.md file, explain what your project is about, its tech stack, how to run it, etc. This is important if you intend to showcase this project on your resume or portfolio. Use this [README.md template](https://github.com/AnnieCannons/countries-app-instructions/blob/main/version-5/write-your-README.md) to help you write it! 
-
----
-
-### 🎯 Final Milestone: App complete!
-1. Push your code to Github
-4. Submit your Github repo link and Netlify link to Canvas! You're done! 🎉
-
----
-
-## 🌟 Stretch Goals (Optional)
-
-Finished the main requirements? Here are some bonus challenges:
-
-- 🏆 Upvote product suggestions
-- 🏆 Add a hamburger menu in mobile view
-- 🏆 Sort suggestions by most/least upvotes and most/least comments
-- 🏆 Edit an existing suggestion
-- 🏆 Delete an existing suggestion
-- 🏆 Add comments to an existing suggestion
-- 🏆 Implement multi-filtering
+Thanks to AnnieCannons for the project structure, Figma designs, and the AI-assisted track curriculum this was built from.
