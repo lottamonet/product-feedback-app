@@ -26,16 +26,20 @@ function Sidebar({ activeCategory, onSelectCategory, isOpen, onClose }) {
         </div>
         <div className="sidebar__filters">
           <button
+            type="button"
             className={`filter-pill ${activeCategory === null ? "filter-pill--active" : ""}`}
             onClick={() => onSelectCategory(null)}
+            aria-pressed={activeCategory === null}
           >
             All
           </button>
           {CATEGORIES.map((category) => (
             <button
+              type="button"
               key={category}
               className={`filter-pill ${activeCategory === category ? "filter-pill--active" : ""}`}
               onClick={() => onSelectCategory(category)}
+              aria-pressed={activeCategory === category}
             >
               {CATEGORY_LABELS[category]}
             </button>

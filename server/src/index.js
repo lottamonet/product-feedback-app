@@ -1,7 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import pkg from "pg";
-import config from "./config.js";
 
 // pg ships as CommonJS, so under "type": "module" we import the whole
 // package and destructure Pool from it — `import { Pool } from "pg"` does
@@ -11,17 +11,26 @@ const { Pool } = pkg;
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// cors() with no options allows any origin. That's fine for local dev;
-// before deploying, restrict this to the actual Netlify origin so the API
-// isn't wide open to any website (see Milestone 8 security audit).
-app.use(cors());
+// Was previously a gitignored server/src/config.js — that worked locally
+// but meant the file (and the DB credentials in it) simply didn't exist
+// when Render cloned the repo from GitHub, crashing the server on startup.
+// Environment variables (set in Render's dashboard for prod, .env locally)
+// are the standard fix: the secret never has to be a file in the repo at all.
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not set");
+}
+
+// Restricts the API to only the actual frontend origin instead of allowing
+// any website to call it — FRONTEND_ORIGIN is set to the real Netlify URL
+// in Render's environment variables once deployed (see Milestone 9).
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173" }));
 // Lets us read JSON bodies (e.g. the AddFeedback form submission) via req.body.
 app.use(express.json());
 
 // A connection pool (not a single client) so multiple requests can run
 // queries concurrently without waiting on each other.
 const pool = new Pool({
-  connectionString: config.databaseUrl,
+  connectionString: process.env.DATABASE_URL,
 });
 
 // Single source of truth for valid categories — used to validate both the

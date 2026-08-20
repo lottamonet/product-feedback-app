@@ -60,7 +60,7 @@ function AddFeedback() {
   }
 
   return (
-    <div className="add-feedback-page">
+    <main className="add-feedback-page">
       <Link to="/" className="go-back-link">
         ‹ Go Back
       </Link>
@@ -69,7 +69,11 @@ function AddFeedback() {
         <div className="add-feedback-form__icon">+</div>
         <h1>Create New Feedback</h1>
 
-        {submitError && <p className="form-error form-error--banner">{submitError}</p>}
+        {submitError && (
+          <p className="form-error form-error--banner" role="alert">
+            {submitError}
+          </p>
+        )}
 
         <div className="form-field">
           <label htmlFor="title">Feedback Title</label>
@@ -80,8 +84,14 @@ function AddFeedback() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className={errors.title ? "input-error" : ""}
+            aria-invalid={!!errors.title}
+            aria-describedby={errors.title ? "title-error" : undefined}
           />
-          {errors.title && <p className="form-error">{errors.title}</p>}
+          {errors.title && (
+            <p className="form-error" id="title-error" role="alert">
+              {errors.title}
+            </p>
+          )}
         </div>
 
         <div className="form-field">
@@ -111,8 +121,14 @@ function AddFeedback() {
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
             className={errors.detail ? "input-error" : ""}
+            aria-invalid={!!errors.detail}
+            aria-describedby={errors.detail ? "detail-error" : undefined}
           />
-          {errors.detail && <p className="form-error">{errors.detail}</p>}
+          {errors.detail && (
+            <p className="form-error" id="detail-error" role="alert">
+              {errors.detail}
+            </p>
+          )}
         </div>
 
         <div className="add-feedback-form__actions">
@@ -124,7 +140,7 @@ function AddFeedback() {
           </button>
         </div>
       </form>
-    </div>
+    </main>
   );
 }
 
