@@ -14,11 +14,14 @@ export const CATEGORY_LABELS = {
 };
 
 // Background/text color pairs for each category's tag pill on a
-// SuggestionCard — picked to stay legible against the light backgrounds.
+// SuggestionCard. Text colors are darkened just enough from the original
+// design palette to clear WCAG AA's 4.5:1 contrast minimum against their
+// background (verified via Lighthouse's color-contrast audit) — `ux` was
+// already compliant and is untouched.
 export const CATEGORY_COLORS = {
-  ui: { bg: "#EAF6FE", text: "#1D8FD1" },
+  ui: { bg: "#EAF6FE", text: "#1876AD" },
   ux: { bg: "#F3EAFB", text: "#8B3FD1" },
-  enhancement: { bg: "#F5EAFC", text: "#AD1FEA" },
-  bug: { bg: "#FDEEE9", text: "#D96B47" },
-  feature: { bg: "#EAEDFC", text: "#4661E6" },
+  enhancement: { bg: "#F5EAFC", text: "#AA16E9" },
+  bug: { bg: "#FDEEE9", text: "#B84A26" },
+  feature: { bg: "#EAEDFC", text: "#425DE5" },
 };
