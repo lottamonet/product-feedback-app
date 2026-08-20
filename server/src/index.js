@@ -69,18 +69,22 @@ app.get("/get-suggestions-by-category/:category", async (req, res) => {
 // the frontend check only stops a well-behaved browser, not a direct API
 // call from curl/Postman/an attacker.
 app.post("/add-one-suggestion", async (req, res) => {
-  const { title, category, detail } = req.body;
+  // req.body can be undefined (missing/wrong Content-Type) or have non-string
+  // fields (e.g. a number) — check types before calling .trim() on anything,
+  // since .trim() on a non-string throws and a bare {} body would otherwise
+  // crash the destructure itself.
+  const { title, category, detail } = req.body || {};
 
-  if (!title || !title.trim()) {
+  if (typeof title !== "string" || !title.trim()) {
     return res.status(400).json({ error: "Title can't be empty" });
   }
   if (title.trim().length > 100) {
     return res.status(400).json({ error: "Title must be 100 characters or fewer" });
   }
-  if (!category || !VALID_CATEGORIES.includes(category.toLowerCase())) {
+  if (typeof category !== "string" || !VALID_CATEGORIES.includes(category.toLowerCase())) {
     return res.status(400).json({ error: "Please select a valid category" });
   }
-  if (!detail || !detail.trim()) {
+  if (typeof detail !== "string" || !detail.trim()) {
     return res.status(400).json({ error: "Detail can't be empty" });
   }
   if (detail.trim().length > 500) {
@@ -126,6 +130,20 @@ app.post("/upvote-suggestion/:id", async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Failed to upvote suggestion" });
   }
+});
+
+// Catches anything thrown/rejected in a route handler above (including
+// express.json()'s own SyntaxError on malformed JSON bodies) and returns
+// clean JSON instead of Express's default HTML error page, which otherwise
+// leaks the server's file paths and full stack trace to the client.
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({ error: "Request body must be valid JSON" });
+  }
+
+  res.status(err.status || 500).json({ error: "Something went wrong" });
 });
 
 app.listen(PORT, () => {
