@@ -6,7 +6,10 @@
 .sidebar__brand {
   background: linear-gradient(135deg, #AD1FEA 0%, #F49F85 100%);
   border-radius: 10px;
-  padding: 1.25rem 1.5rem;
+  /* Extra vertical padding vs. .suggestions-header's 1.25rem — per Figma,
+     this card sits taller than the header bar it lines up next to, not
+     the same height. */
+  padding: 2rem 1.5rem;
   color: var(--color-white);
   margin-bottom: 1.5rem;
 }
@@ -62,6 +65,25 @@
 
 .sidebar__backdrop {
   display: none;
+}
+
+/* Tablet (601-768px): Figma's Tablet - Suggestions frame keeps the brand
+   card and filter pills side by side in one row, not stacked full-width
+   blocks — the suggestions header/list is what goes full-width below. */
+@media (min-width: 601px) and (max-width: 768px) {
+  .sidebar {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .sidebar__brand {
+    flex: 0 0 260px;
+    margin-bottom: 0;
+  }
+
+  .sidebar__filters {
+    flex: 1;
+  }
 }
 
 /* Hamburger menu stretch goal: below 600px the sidebar becomes a
