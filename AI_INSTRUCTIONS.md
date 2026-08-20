@@ -86,10 +86,13 @@ Refer to the [Countries API Documentation](https://github.com/AnnieCannons/count
 
 ### 🎯 Milestone 2: Set up your repo with an AI agent
 
-1. Fork this Github repo into your own account. Use this [fork and clone guide](https://docs.google.com/document/d/18jxCUA0bebCyYaIHy8aaKMgOQH4w5-b-iCGDWpV4K4M/edit?tab=t.55gk3qetux2a#heading=h.wbbot8ebr58a) to help you.
-2. Clone your new Github repo into your `dev` folder.
-3. Open the project in your IDE and let the **AI agent** (not you, manually) scaffold the root project structure — `client` and `server` folders, `package.json` files, `.gitignore`, etc. — based on your PRD's tech stack section.
-4. Review what the agent created before moving on. Confirm it matches what your PRD asked for.
+1. To start the project, you can either:
+   * Fork and clone [this repo](https://github.com/AnnieCannons/product-feedback-app) to your local machine. Use this [fork and clone guide](https://docs.google.com/document/d/18jxCUA0bebCyYaIHy8aaKMgOQH4w5-b-iCGDWpV4K4M/edit?tab=t.55gk3qetux2a#heading=h.wbbot8ebr58a) to help you, OR
+   * Ask the bot to create the repo for you at `/documents/dev` (so it knows where the project should live on your local machine).
+2. Open the project in your IDE.
+   * If you forked and cloned, the `client`/`server` structure is already there for you — skip ahead to Milestone 3.
+   * If you asked the bot to create the repo, let the **AI agent** (not you, manually) scaffold the root project structure — `client` and `server` folders, `package.json` files, `.gitignore`, etc. — based on your PRD's tech stack section.
+3. Review what the agent created before moving on. Confirm it matches what your PRD asked for.
 
 ---
 
